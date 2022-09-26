@@ -1,0 +1,276 @@
+﻿<Application x:Class="To_DoList.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:To_DoList"
+             StartupUri="MainWindow.xaml">
+
+    <Application.Resources>
+        
+
+        <SolidColorBrush x:Key="BackgroundColour"  Color="#FF232323"/>
+            <SolidColorBrush x:Key="WindowBorderColour"  Color="#FF202020"/>
+            <SolidColorBrush x:Key="WindowTitleColour"  Color="Crimson"/>
+            <SolidColorBrush x:Key="ControlDisabledBorderBrush"  Color="#FF464646" />
+            <SolidColorBrush x:Key="ControlMouseOverBackground"  Color="#FF3F3F3F" />
+            <SolidColorBrush x:Key="ControlMouseOverBorderBrush"  Color="#FF414141"/>
+            <SolidColorBrush x:Key="ControlSelectedBackground" Color="#FF323232"/>
+            <SolidColorBrush x:Key="ControlSelectedBorderBrush" Color="#FF373737"/>
+            <SolidColorBrush x:Key="ControlSelectedMouseOverBackground" Color="#FF3F3F3F"/>
+            <SolidColorBrush x:Key="TextBox.Static.Background" Color="#FFFFFFFF"/>
+            <SolidColorBrush x:Key="ControlSelectedMouseOverBorderBrush" Color="#FF424242"/>
+            <SolidColorBrush x:Key="ControlGlythColour" Color="#FFEBEBEB" />
+            <SolidColorBrush x:Key="ControlMouseOverGlythColour"  Color="#FFD7D7D7" />
+            <SolidColorBrush x:Key="ControlSelectedGlythColour"   Color="#FFC8C8C8" />
+            <SolidColorBrush x:Key="ControlDisabledGlythColour" Color="#FFA0A0A0" />
+            <SolidColorBrush x:Key="ControlDefaultBackground" Color="#FF2D2D2D" />
+            <SolidColorBrush x:Key="ControlDefaultBorderBrush" Color="#FF323232" />
+            <Color x:Key="BorderMediumColor">#FF888888</Color>
+            <LinearGradientBrush x:Key="MenuPopupBrush" EndPoint="0.5,1" StartPoint="0.5,0"/>
+            <SolidColorBrush x:Key="ControlBrightPrimaryColourBorderBrush" Color="#FF50A4FA" />
+
+            <ControlTemplate x:Key="CloseWindowButton" TargetType="{x:Type Button}">
+                <Border x:Name="border" 
+                BorderBrush="{TemplateBinding BorderBrush}" 
+                BorderThickness="{TemplateBinding BorderThickness}" 
+                Background="{TemplateBinding Background}" 
+                SnapsToDevicePixels="true"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch">
+                    <ContentPresenter x:Name="contentPresenter" 
+                              Focusable="False" 
+                              Margin="{TemplateBinding Padding}" 
+                              RecognizesAccessKey="True" 
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsDefaulted" Value="true">
+                        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ControlMouseOverBorderBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" TargetName="border" Value="Gray"/>
+                        <Setter Property="BorderBrush" TargetName="border" Value="Gray"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="true">
+                        <Setter Property="Background" TargetName="border" Value="#FF940A14"/>
+                        <Setter Property="BorderBrush" TargetName="border" Value="#FF940A14"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
+            <Style x:Key="FocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle StrokeDashArray="1 2" 
+                               StrokeThickness="1" 
+                               Stroke="{StaticResource ControlBrightPrimaryColourBorderBrush}"
+                               SnapsToDevicePixels="true" 
+                               Margin="2"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
+                <Setter Property="BorderBrush" Value="{StaticResource WindowBorderColour}"/>
+                <Setter Property="Background" Value="{StaticResource BackgroundColour}"/>
+                <Setter Property="Foreground" Value="{StaticResource WindowTitleColour}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+                <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+                <Setter Property="WindowChrome.WindowChrome">
+                    <Setter.Value>
+                        <WindowChrome CaptionHeight="26"
+                              ResizeBorderThickness="6"
+                              CornerRadius="0"
+                              GlassFrameThickness="1"
+                              NonClientFrameEdges="None"
+                              UseAeroCaptionButtons="False"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Window}">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Grid>
+                                        <AdornerDecorator Margin="0,30,0,0">
+                                            <ContentPresenter />
+                                        </AdornerDecorator>
+                                        <Grid Height="30" x:Name="titlebar"
+                                      Background="{TemplateBinding BorderBrush}"
+                                      VerticalAlignment="Top" Margin="0">
+                                            <DockPanel Margin="0,0,130,0">
+                                                <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,4,0,0" 
+                                               Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Height="24"  />
+                                                <TextBlock Margin="5,3"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Stretch"
+                                                   TextWrapping="NoWrap"
+                                                   FontSize="14" Width="Auto"
+                                                   Foreground="Crimson"
+                                                   Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"   
+                                                   Grid.Column="1" TextAlignment="Left"/>
+                                            </DockPanel>
+                                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="0" HorizontalAlignment="Right">
+                                                <Button x:Name="btnMinimize"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
+                                                Width="40"
+                                                VerticalContentAlignment="Bottom"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
+                                                Click="Minimize_Event"
+                                                Template="{DynamicResource CloseWindowButton}">
+
+                                                    <Rectangle Width="10"
+                                                       VerticalAlignment="Center" 
+                                                       Margin="1 1 0 0" 
+                                                       Stroke="Crimson" 
+                                                       StrokeThickness="2"/>
+                                                </Button>
+
+                                                <Button x:Name="btnRestore"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
+                                                Width="40"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
+                                                Click="AutoMinimize_Event"
+                                                Template="{DynamicResource CloseWindowButton}">
+                                                    <Grid Width="12" Height="12">
+                                                        <Rectangle StrokeThickness="2" 
+                                                           Stroke="Crimson"
+                                                           Margin="3,0,0,3"/>
+                                                        <Rectangle StrokeThickness="2" 
+                                                           Stroke="Crimson"
+                                                           Margin="0,3,3,0"/>
+
+                                                    </Grid>
+                                                </Button>
+                                                <Button x:Name="btnClose"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
+                                                Template="{DynamicResource CloseWindowButton}"
+                                                Width="40"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
+                                                Click="CloseWindow_Event">
+                                                    <Grid Margin="0 1 0 0">
+                                                        <Line X1="0" Y1="0" X2="11" Y2="11" Stroke="Crimson" StrokeThickness="2" />
+                                                        <Line X1="0" Y2="0" Y1="11" X2="11" Stroke="Crimson" StrokeThickness="2" />
+                                                    </Grid>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="WindowState" Value="Maximized">
+                        <Setter Property="BorderThickness" Value="8"/>
+                    </Trigger>
+                    <Trigger Property="WindowState" Value="Normal">
+                        <Setter Property="BorderThickness" Value="1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+
+
+            <Style x:Key="CustomToolWindowStyle" TargetType="{x:Type Window}">
+                <Setter Property="BorderBrush" Value="{StaticResource WindowBorderColour}"/>
+                <Setter Property="Background" Value="{StaticResource BackgroundColour}"/>
+                <Setter Property="Foreground" Value="{StaticResource WindowTitleColour}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+                <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+                <Setter Property="WindowChrome.WindowChrome">
+                    <Setter.Value>
+                        <WindowChrome CaptionHeight="26"
+                              ResizeBorderThickness="6"
+                              CornerRadius="0"
+                              GlassFrameThickness="1"
+                              NonClientFrameEdges="None"
+                              UseAeroCaptionButtons="False"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Window}">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Grid>
+                                        <AdornerDecorator Margin="0,30,0,0">
+                                            <ContentPresenter />
+                                        </AdornerDecorator>
+                                        <Grid Height="30" x:Name="titlebar"
+                                      Background="{TemplateBinding BorderBrush}"
+                                      VerticalAlignment="Top" Margin="0">
+                                            <DockPanel Margin="0,0,130,0">
+                                                <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,4,0,0" 
+                                               Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Height="24"  />
+                                                <TextBlock Margin="5,3"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Stretch"
+                                                   TextWrapping="NoWrap"
+                                                   FontSize="14" Width="Auto"
+                                                   Foreground="Crimson"
+                                                   Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"   
+                                                   Grid.Column="1" TextAlignment="Left"/>
+                                            </DockPanel>
+                                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="0" HorizontalAlignment="Right">
+                                                <Button x:Name="btnMinimize"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
+                                                Width="40"
+                                                VerticalContentAlignment="Bottom"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
+                                                Click="Minimize_Event"
+                                                Template="{DynamicResource CloseWindowButton}">
+
+                                                    <Rectangle Width="10"
+                                                       VerticalAlignment="Center" 
+                                                       Margin="1 1 0 0" 
+                                                       Stroke="Crimson" 
+                                                       StrokeThickness="2"/>
+                                                </Button>
+
+                                                <Button x:Name="btnClose"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
+                                                Template="{DynamicResource CloseWindowButton}"
+                                                Width="40"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
+                                                Click="CloseWindow_Event">
+                                                    <Grid Margin="0 1 0 0">
+                                                        <Line X1="0" Y1="0" X2="11" Y2="11" Stroke="Crimson" StrokeThickness="2" />
+                                                        <Line X1="0" Y2="0" Y1="11" X2="11" Stroke="Crimson" StrokeThickness="2" />
+                                                    </Grid>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="WindowState" Value="Maximized">
+                        <Setter Property="BorderThickness" Value="8"/>
+                    </Trigger>
+                    <Trigger Property="WindowState" Value="Normal">
+                        <Setter Property="BorderThickness" Value="1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Application.Resources>
+</Application>
